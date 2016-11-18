@@ -14,13 +14,16 @@
 # We have to source the file instead of using sh. The reason is because the line
 # source ~./.bashrc will source the file in the sub-shell, i.e. a shell which
 # is started as child process of the main shell.
+#
 # Exit if not sourced
 if [ "$0" == "$BASH_SOURCE" ]; then
   echo >&2 "Setup script has to be sourced, not run with sh. Aborting"
   exit 1
 fi
 
+# Change this if your path is not at home
 INTENDED_BASH_PATH=~/.bashrc
+
 # To set up the bashrc script in Windows using cygwin it is necessary to add
 # at the beginning of the script to fix a problem with newlines the following:
 if [ $(uname -o) == "Cygwin" ]; then
@@ -42,7 +45,7 @@ ls
 
 #cd + ls
 function cs () {
-    cd \$1
+    cd $1
     ls -a
 }
 
@@ -53,33 +56,33 @@ function tp () {
 
 #goto transfer path: goes where the previously saved tp points
 function gtp () {
-    cs \`cat ~/.sp\`
+    cs `cat ~/.sp`
 }
 
 #cat with color
 function ccat () {
-    source-highlight -fesc -i \$1
+    source-highlight -fesc -i $1
 }
 
 #Remove trash from terminal and runs program in background
 function evince () {
-    /usr/bin/evince \$* 2> /dev/null & disown
+    /usr/bin/evince $* 2> /dev/null & disown
 }
 function gedit () {
-        /usr/bin/gedit \$* 2> /dev/null & disown
+        /usr/bin/gedit $* 2> /dev/null & disown
 }
 
 # up N: moves N times upwards (cd ../../../{N})
 # author: Frederic Dauod
 function up () {
-  LIMIT=\$1
-  P=\$PWD
+  LIMIT=$1
+  P=$PWD
   for ((i=1; i <= LIMIT; i++))
   do
-      P=\$P/..
+      P=$P/..
   done
-  cd \$P
-  export MPWD=\$P
+  cd $P
+  export MPWD=$P
 }'
 
 # apply the change, only if it isn't already
