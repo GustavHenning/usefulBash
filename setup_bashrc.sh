@@ -16,10 +16,11 @@
 # is started as child process of the main shell.
 # Exit if not sourced
 if [ "$0" == "$BASH_SOURCE" ]; then
-  echo "script has to be sourced, not run with sh"
+  echo >&2 "Setup script has to be sourced, not run with sh. Aborting"
   exit 1
 fi
 
+INTENDED_BASH_PATH=~/.bashrc
 # To set up the bashrc script in Windows using cygwin it is necessary to add
 # at the beginning of the script to fix a problem with newlines the following:
 if [ $(uname -o) == "Cygwin" ]; then
@@ -31,7 +32,7 @@ if [ ! -e ~/.sp ]; then
     touch ~/.sp
 fi
 
-echo "
+ADDON=$'
 ################################################################################
 #Hide user name and host in terminal
 #export PS1="\w$ "
@@ -79,7 +80,20 @@ function up () {
   done
   cd \$P
   export MPWD=\$P
-}" >> ~/.bashrc
+}'
 
-source ~/.bashrc
+# apply the change, only if it isn't already
+! grep -q "function up () {" $INTENDED_BASH_PATH || { echo >&2 "Script already run. Aborting"; return 1; }
+
+# Valid bash, not POSIX sh
+echo "$ADDON" >> $INTENDED_BASH_PATH
+source $INTENDED_BASH_PATH
+
+# if unix & dos2unix exists apply it
+if [ $(uname -o) == "Cygwin" ]; then
+  if [ command -v dos2unix >/dev/null 2>&1 ]; then
+    dos2unix $INTENDED_BASH_PATH
+  fi
+fi
+
 echo ".bashrc updated"
