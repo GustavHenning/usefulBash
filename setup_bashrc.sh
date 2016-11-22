@@ -43,6 +43,8 @@ ADDON=$'
 #Make ls every time a terminal opens
 ls
 
+alias ll="ls -lasi"
+
 #cd + ls
 function cs () {
     cd $1
@@ -83,6 +85,18 @@ function up () {
   done
   cd $P
   export MPWD=$P
+}
+
+function chr () {
+  if [ $(which google-chrome-beta | wc -l) -eq 1 ]; then
+     google-chrome-beta $* 2> /dev/null & disown
+  else
+     if [ $(which google-chrome | wc -l) -eq 1 ]; then
+        google-chrome $* 2> /dev/null & disown
+     else
+        echo "No chrome :("
+     fi
+  fi
 }'
 
 # apply the change, only if it isn't already

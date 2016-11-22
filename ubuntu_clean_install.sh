@@ -9,7 +9,7 @@ dpkg deluge default-jre default-java-plugin \
 faac faad ffmpeg flac \
 git gnome-shell gnome-tweak-tool gnome-mplayer geany gimp guake \
 htop inkscape lynx lame most mysql-common mpg123 \
-nano nmap nethogs php perl puddletag \
+nano nmap nethogs php perl puddletag preload \
 sublime-text-installer source-highlight subversion sed \
 unzip unrar p7zip-full unetbootin \
 vlc vorbis-tools wget xclip x264"
