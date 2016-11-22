@@ -45,28 +45,38 @@ ls
 
 alias ll="ls -lasi"
 
-#cd + ls
+#
+# cd + ls
+#
 function cs () {
     cd $1
     ls -a
 }
 
-#transfer path: save the current path to a hidden file
+#
+# transfer path: save the current path to a hidden file
+#
 function tp () {
     pwd > ~/.sp
 }
 
-#goto transfer path: goes where the previously saved tp points
+#
+# goto transfer path: goes where the previously saved tp points
+#
 function gtp () {
     cs `cat ~/.sp`
 }
 
-#cat with color
+#
+# cat with color
+#
 function ccat () {
     source-highlight -fesc -i $1
 }
 
-#Remove trash from terminal and runs program in background
+#
+# Remove trash from terminal and runs program in background
+#
 function evince () {
     /usr/bin/evince $* 2> /dev/null & disown
 }
@@ -74,8 +84,11 @@ function gedit () {
         /usr/bin/gedit $* 2> /dev/null & disown
 }
 
+#
 # up N: moves N times upwards (cd ../../../{N})
 # author: Frederic Dauod
+#
+
 function up () {
   LIMIT=$1
   P=$PWD
@@ -87,6 +100,10 @@ function up () {
   export MPWD=$P
 }
 
+#
+# Open chrome fast
+#
+
 function chr () {
   if [ $(which google-chrome-beta | wc -l) -eq 1 ]; then
      google-chrome-beta $* 2> /dev/null & disown
@@ -96,6 +113,28 @@ function chr () {
      else
         echo "No chrome :("
      fi
+  fi
+}
+
+#
+# Do a normal add/commit/push in one go
+#
+
+function gut () {
+  if [ $# -eq 0 ]; then
+     echo "args are 1: message, 2: branch (default: master)"
+     return 1
+  fi
+  DEST="master"
+  if [ -z "$2" ]; then
+    DEST=$2
+  fi
+  if [ $(which git | wc -l) -eq 1 ]; then
+    git add -A
+    git commit -m $1
+    git push origin "$DEST"
+  else
+    echo "no git :("
   fi
 }'
 
