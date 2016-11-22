@@ -121,7 +121,6 @@ function chr () {
 #
 
 function gut () {
-  set -x
   if [ $# -eq 0 ] || [ $# -gt 2 ]; then
      echo "args are 1: message, 2: branch (default: master)"
      echo "dont forget to \"quote\" your message"
