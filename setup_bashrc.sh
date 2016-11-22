@@ -121,22 +121,27 @@ function chr () {
 #
 
 function gut () {
-  if [ $# -eq 0 ]; then
+  set -x
+  if [ $# -eq 0 ] || [ $# -gt 2 ]; then
      echo "args are 1: message, 2: branch (default: master)"
+     echo "dont forget to \"quote\" your message"
      return 1
   fi
-  DEST="master"
+  DEST=""
   if [ -z "$2" ]; then
-    DEST=$2
+    DEST="master"
+  else
+    DEST="$2"
   fi
   if [ $(which git | wc -l) -eq 1 ]; then
     git add -A
-    git commit -m $1
-    git push origin "$DEST"
+    git commit -m \\\""$1"\\\"
+    git push origin $DEST
   else
     echo "no git :("
   fi
-}'
+}
+'
 
 # apply the change, only if it isn't already
 ! grep -q "function up () {" $INTENDED_BASH_PATH || { echo >&2 "Script already run. Aborting"; return 1; }
