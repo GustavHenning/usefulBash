@@ -134,7 +134,7 @@ function gut () {
   fi
   if [ $(which git | wc -l) -eq 1 ]; then
     git add -A
-    git commit -m \\\"$1\\\"
+    git commit -m \"$1\"
     git push origin $DEST
   else
     echo "no git :("
