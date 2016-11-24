@@ -70,6 +70,9 @@ alias update="sudo apt-get update && sudo apt-get upgrade && sudo apt-get autocl
 alias reboot="sudo /sbin/reboot"
 alias shutdown="sudo /sbin/shutdown"
 
+# Wifi
+alias scanwifi="sudo iwlist scan >/dev/null 2>&1 &"
+
 #
 # cd + ls
 #
