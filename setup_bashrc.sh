@@ -35,15 +35,40 @@ if [ ! -e ~/.sp ]; then
     touch ~/.sp
 fi
 
-ADDON=$'
-################################################################################
-#Hide user name and host in terminal
+ADDON=$'#START!SETUP!SCR##########
+
+# Hide user name and host in terminal
 #export PS1="\w$ "
 
-#Make ls every time a terminal opens
+# Make ls every time a terminal opens
 ls
 
+# extensive ls
 alias ll="ls -lasi"
+
+# safe file management
+alias cp="cp -iv"
+alias rm="rm -i"
+alias mv="mv -i"
+
+# quick directory movement
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+
+# quickly find files and directory
+alias ff="find . -type f -name"
+alias fd="find . -type d -name"
+
+# print the current time
+alias now="date +%T"
+
+# all-in-one update
+alias update="sudo apt-get update && sudo apt-get upgrade && sudo apt-get autoclean"
+
+# OS Power commands
+alias reboot="sudo /sbin/reboot"
+alias shutdown="sudo /sbin/shutdown"
 
 #
 # cd + ls
@@ -88,7 +113,6 @@ function gedit () {
 # up N: moves N times upwards (cd ../../../{N})
 # author: Frederic Dauod
 #
-
 function up () {
   LIMIT=$1
   P=$PWD
@@ -103,7 +127,6 @@ function up () {
 #
 # Open chrome fast
 #
-
 function chr () {
   if [ $(which google-chrome-beta | wc -l) -eq 1 ]; then
      google-chrome-beta $* 2> /dev/null & disown
@@ -119,7 +142,6 @@ function chr () {
 #
 # Do a normal add/commit/push in one go
 #
-
 function gut () {
   if [ $# -eq 0 ] || [ $# -gt 2 ]; then
      echo "args are 1: message, 2: branch (default: master)"
@@ -140,10 +162,34 @@ function gut () {
     echo "no git :("
   fi
 }
-'
+
+#
+# extract an archive
+#
+extract () {
+   if [ -f $1 ] ; then
+       case $1 in
+           *.tar.bz2)   tar xvjf $1    ;;
+           *.tar.gz)    tar xvzf $1    ;;
+           *.bz2)       bunzip2 $1     ;;
+           *.rar)       unrar x $1       ;;
+           *.gz)        gunzip $1      ;;
+           *.tar)       tar xvf $1     ;;
+           *.tbz2)      tar xvjf $1    ;;
+           *.tgz)       tar xvzf $1    ;;
+           *.zip)       unzip $1       ;;
+           *.Z)         uncompress $1  ;;
+           *.7z)        7z x $1        ;;
+           *)           echo "don\'t know how to extract \'$1\'..." ;;
+       esac
+   else
+       echo "\'$1\' is not a valid file!"
+   fi
+ }
+#END!SETUP!SCR#'
 
 # apply the change, only if it isn't already
-! grep -q "function up () {" $INTENDED_BASH_PATH || { echo >&2 "Script already run. Aborting"; return 1; }
+! grep -q "#START!SETUP!SCR#" $INTENDED_BASH_PATH || { echo >&2 "Script already run. Replacing... "; sed -i '/#START!SETUP!SCR#/,/#END!SETUP!SCR#/d' $INTENDED_BASH_PATH; }
 
 # Valid bash, not POSIX sh
 echo "$ADDON" >> $INTENDED_BASH_PATH
