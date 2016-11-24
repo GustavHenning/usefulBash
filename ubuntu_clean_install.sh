@@ -50,19 +50,20 @@ function jgi {
     if [ $RUNNING_CYGWIN -eq 1 ]; then
       ALRDY=$(apt-cyg | grep "^$var$" | wc -l)
       if [ $ALRDY -eq 0 ]; then
-        apt-cyg install "$var" 1> /dev/null 
+        apt-cyg install "$var" 1> /dev/null
       fi
     else #linux
 	sagi "$var" 1> /dev/null
 	echo -n "."
     fi
   done
-  
+
 }
 
 #
 # PACKAGES FROM *-GET
 #
+#TODO replace with check for linux and also function: sar
 sudo add-apt-repository --yes ppa:webupd8team/atom #Atom
 sudo add-apt-repository --yes ppa:webupd8team/sublime-text-3 #Sublime
 
@@ -125,4 +126,3 @@ git config --global user.name $GIT_NAME
 git config --global user.email $GIT_EMAIL
 
 echo "Have fun"
-
