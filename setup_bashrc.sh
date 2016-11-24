@@ -21,7 +21,7 @@ if [ "$0" == "$BASH_SOURCE" ]; then
   exit 1
 fi
 
-# Change this if your path is not at home
+# Change this if home is not where you lay your head
 INTENDED_BASH_PATH=~/.bashrc
 
 # To set up the bashrc script in Windows using cygwin it is necessary to add
@@ -188,10 +188,10 @@ extract () {
  }
 #END!SETUP!SCR#'
 
-# apply the change, only if it isn't already
+# apply the change, replace if an older version exists
 ! grep -q "#START!SETUP!SCR#" $INTENDED_BASH_PATH || { echo >&2 "Script already run. Replacing... "; sed -i '/#START!SETUP!SCR#/,/#END!SETUP!SCR#/d' $INTENDED_BASH_PATH; }
 
-# Valid bash, not POSIX sh
+# Valid bash, not POSIX sh! (suggestions welcome)
 echo "$ADDON" >> $INTENDED_BASH_PATH
 source $INTENDED_BASH_PATH
 
