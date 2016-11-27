@@ -34,7 +34,7 @@ function jgu {
     if [ $RUNNING_CYGWIN -eq 1 ]; then
       apt-cyg update 1> /dev/null
     else
-      sudo apt-get update 2>&1 /dev/null
+      sudo apt-get update 
     fi
 }
 
@@ -53,8 +53,7 @@ function jgi {
         apt-cyg install "$var" 1> /dev/null
       fi
     else #linux
-	sagi "$var" 1> /dev/null
-	echo -n "."
+	sagi "$var"
     fi
   done
 
