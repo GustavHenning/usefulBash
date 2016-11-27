@@ -72,6 +72,10 @@ alias shutdown="sudo /sbin/shutdown"
 
 # Wifi
 alias scanwifi="sudo iwlist scan >/dev/null 2>&1 &"
+alias rswifi="sudo service network-manager restart"
+
+# open mail client
+alias mail="thunderbird > /dev/null 2>&1 & disown"
 
 #
 # cd + ls
