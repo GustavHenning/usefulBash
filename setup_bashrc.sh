@@ -174,25 +174,36 @@ function gut () {
 # extract an archive
 #
 extract () {
-   if [ -f $1 ] ; then
-       case $1 in
-           *.tar.bz2)   tar xvjf $1    ;;
-           *.tar.gz)    tar xvzf $1    ;;
-           *.bz2)       bunzip2 $1     ;;
-           *.rar)       unrar x $1       ;;
-           *.gz)        gunzip $1      ;;
-           *.tar)       tar xvf $1     ;;
-           *.tbz2)      tar xvjf $1    ;;
-           *.tgz)       tar xvzf $1    ;;
-           *.zip)       unzip $1       ;;
-           *.Z)         uncompress $1  ;;
-           *.7z)        7z x $1        ;;
-           *)           echo "don\'t know how to extract \'$1\'..." ;;
-       esac
-   else
-       echo "\'$1\' is not a valid file!"
-   fi
- }
+ if [ -f $1 ] ; then
+     case $1 in
+         *.tar.bz2)   tar xvjf $1    ;;
+         *.tar.gz)    tar xvzf $1    ;;
+         *.bz2)       bunzip2 $1     ;;
+         *.rar)       unrar x $1       ;;
+         *.gz)        gunzip $1      ;;
+         *.tar)       tar xvf $1     ;;
+         *.tbz2)      tar xvjf $1    ;;
+         *.tgz)       tar xvzf $1    ;;
+         *.zip)       unzip $1       ;;
+         *.Z)         uncompress $1  ;;
+         *.7z)        7z x $1        ;;
+         *)           echo "don\'t know how to extract \'$1\'..." ;;
+     esac
+ else
+     echo "\'$1\' is not a valid file!"
+ fi
+}
+
+#
+# remove spaces recursively in folder and file names
+# author: Michael Krelin
+#
+
+function fixnames () {
+  find . -depth -name \'* *\' \
+  | while IFS= read -r f ; do mv -i \"$f\" \"$(dirname \"$f\")/$(basename \"$f\"|tr \' \' _)\" ; done
+}
+
 #END!SETUP!SCR#'
 
 # apply the change, replace if an older version exists

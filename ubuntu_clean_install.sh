@@ -12,7 +12,7 @@ htop inkscape lynx lame most mysql-common mpg123 \
 nano nmap nethogs php perl puddletag preload \
 sublime-text-installer source-highlight subversion sed \
 unzip unrar p7zip-full unetbootin \
-vlc vorbis-tools wget xclip x264"
+vlc vorbis-tools wget xclip x264 xdotool"
 
 # Script for a new setup (Ubuntu or Cygwin)
 RUNNING_CYGWIN=$(uname -o | grep "Cygwin" | wc -l)
