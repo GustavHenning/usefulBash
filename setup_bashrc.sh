@@ -43,6 +43,12 @@ ADDON=$'#START!SETUP!SCR##########
 # Make ls every time a terminal opens
 ls
 
+# typos
+alias sl="ls"
+alias exti="exit"
+alias eixt="exit"
+alias xit="exit"
+
 # extensive ls
 alias ll="ls -lasi"
 
