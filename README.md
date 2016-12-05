@@ -11,3 +11,6 @@ Used for a clean slate install of ubuntu to get up to speed quicker
 * Intended Cygwin support (not really tested the latest versions)
 
 Feedback welcome and appreciated. Pull requests welcome: readability over elegance
+
+## Disclaimer
+I take no responsibility for the headaches caused by these scripts. They may not be written to fit your system, please read through them before using them.
