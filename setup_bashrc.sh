@@ -48,6 +48,9 @@ alias sl="ls"
 alias exti="exit"
 alias eixt="exit"
 alias xit="exit"
+alias clera="clear"
+alias clea="clear"
+alias claer="clear"
 
 # extensive ls
 alias ll="ls -lasi"
