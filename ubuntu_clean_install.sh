@@ -30,21 +30,21 @@ else
 fi
 
 # (j)ust (g)et (u)pdate
-function jgu {
+jgu() {
     if [ $RUNNING_CYGWIN -eq 1 ]; then
       apt-cyg update 1> /dev/null
     else
-      sudo apt-get update 
+      sudo apt-get update
     fi
 }
 
 # sagi: (s)udo (a)pt-(g)et (i)nstall
-function sagi {
+sagi() {
   sudo apt-get -q --yes install $1
 }
 
 # jgi: (j)ust (g)et (i)nstall
-function jgi {
+jgi() {
   for var in "$@"
   do
     if [ $RUNNING_CYGWIN -eq 1 ]; then
@@ -70,7 +70,7 @@ jgu
 jgi $PACKAGES
 
 # Manual stuff
-function ubuntu_manual {
+ubuntu_manual() {
 
 ##
 ## Google Chrome

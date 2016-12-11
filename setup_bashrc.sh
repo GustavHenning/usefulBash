@@ -26,7 +26,7 @@ INTENDED_BASH_PATH=~/.bashrc
 
 # To set up the bashrc script in Windows using cygwin it is necessary to add
 # at the beginning of the script to fix a problem with newlines the following:
-if [ $(uname -o) == "Cygwin" ]; then
+if [ "$(uname -o)" == "Cygwin" ]; then
   (set -o igncr) 2>/dev/null && set -o igncr;
 fi
 
@@ -223,8 +223,8 @@ echo "$ADDON" >> $INTENDED_BASH_PATH
 source $INTENDED_BASH_PATH
 
 # if unix & dos2unix exists apply it
-if [ $(uname -o) == "Cygwin" ]; then
-  if [ command -v dos2unix >/dev/null 2>&1 ]; then
+if [ "$(uname -o)" == "Cygwin" ]; then
+  if command -v dos2unix >/dev/null 2>&1; then
     dos2unix $INTENDED_BASH_PATH
   fi
 fi

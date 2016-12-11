@@ -37,7 +37,7 @@ if [ $INST_BOOST -eq 1 ]; then
 echo "Fetching $BOOST_FILE..."
 wget -O $BOOST_FILE.tar.gz http://sourceforge.net/projects/boost/files/boost/$BOOST_VERSION/$BOOST_FILE.tar.gz/downloadof
 tar xzvf $BOOST_FILE.tar.gz
-cd $BOOST_FILE/
+cd $BOOST_FILE/||exit
 
 # required libraries
 echo "Installing requirements for $BOOST_FILE..."
