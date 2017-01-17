@@ -10,7 +10,7 @@
 #
 # author: Gustav Henning 2016
 #
-#set -x
+
 # returns 1 if arg passed is an integer
 isInt() {
   if [ "$1" -eq "$1" ]; then
@@ -40,7 +40,7 @@ isFloat() {
   fi
 }
 
-varyLower() {
+varyLower() { # TODO floats
   if [[ $(isInt $1) -eq 1 ]]; then
     if [[ $1 -eq 1 ]]; then
       echo 0.9
@@ -50,16 +50,10 @@ varyLower() {
   fi
 }
 
-varyHigher() {
+varyHigher() { # TODO floats
   if [[ $(isInt $1) -eq 1 ]]; then
     echo $(($1 + 1))
   fi
-}
-
-printMatrix() {
-  declare -A argArr=("${!1}")
-  echo "${argArr[@]}"
-  echo "lel"
 }
 
 # returns 1 if $1 > $2, 0 if $1 == $2 and -1 if $1 < $2
@@ -134,6 +128,7 @@ CURRENT_CMD=$PROGRAM_COMMAND
 while [[ $STAGNATION -ne 1 ]]; do
   STAGNATION=1
   # tweak the numbers and fill the VARIATIONS array
+  # TODO add option for 5 columns or more
   for ((i=0;i<ROWS;i++)) do
     for ((j=0;j<COLS;j++)) do
       IND=${NUM_INDICES[$i]}
@@ -168,13 +163,15 @@ while [[ $STAGNATION -ne 1 ]]; do
       # execute new cmd
       NEW_RET=$($CMD_TO_RUN)
       CMP=$(compareResults $CURRENT_HIGH $NEW_RET)
+      # if new top score
       if [[ $CMP -le 0 ]]; then
         CURRENT_HIGH=$NEW_RET
+        # dont replace CMD if same score
         if [[ $CMP -lt 0 ]]; then
           CURRENT_CMD=$CMD_TO_RUN
         fi
       fi
-
+      # stagnate only if all iterations gave no new top score
       CURRENT_STILL_HIGH=$CMP || $CURRENT_STILL_HIGH
       if [[ $CURRENT_STILL_HIGH -lt 0 ]]; then
         STAGNATION=0
