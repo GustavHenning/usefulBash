@@ -3,19 +3,20 @@
 #
 # a simple test to see if wiggle.sh converges on a number
 #
-
+set -x
 MAX_VAL=1000
 PARAM_VAL=$2
 
-function isNum {
-  if [[ $1 == ?(-)+([0-9]) ]]; then
-    echo 1;
+isNum() {
+  regExp='^?(-)+([0-9])$' #TODO this is flawed
+  if [[ $1 =~ $regExp ]]; then
+    echo 1
   else
-    echo 0;
+    echo 0
   fi
 }
-
-PARAM_VALID=$(isNum $PARAM_VAL)
+isNum $PARAM_VAL
+PARAM_VALID=$?
 
 # if $2 was a number
 if [[ $PARAM_VALID -ne 0 ]]; then

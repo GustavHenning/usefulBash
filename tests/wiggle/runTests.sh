@@ -4,7 +4,7 @@
 
 RES=0
 
-SIMPLE_TERMINATION=$(sh ../../wiggle.sh "sh ./simpleTermination.sh --asdf 10")
+SIMPLE_TERMINATION=$(bash ../../wiggle.sh "bash ./simpleTermination.sh --asdf 10")
 RES=$? || RES;
 
 if [[ $RES -eq 1 ]]; then
@@ -17,4 +17,4 @@ else
   echo "Tests failed."
 fi
 
-exit $SIMPLE_TERMINATION;
+echo $SIMPLE_TERMINATION;

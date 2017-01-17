@@ -1,0 +1,2 @@
+Test that terminates on arg 0.5
+Test that terminates on arg -0.1
