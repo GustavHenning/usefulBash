@@ -10,11 +10,10 @@
 #
 # author: Gustav Henning 2016
 #
-set -x
+#set -x
 # returns 1 if arg passed is an integer
 isInt() {
-  regExp='?(-)+([0-9])'
-  if [[ $1 =~ $regExp ]]; then
+  if [ "$1" -eq "$1" ]; then
     echo 1
   else
     echo 0
@@ -42,26 +41,32 @@ isFloat() {
 }
 
 varyLower() {
-  echo $1
+  if [[ $(isInt $1) -eq 1 ]]; then
+    if [[ $1 -eq 1 ]]; then
+      echo 0.9
+    else
+      echo $(($1 - 1))
+    fi
+  fi
 }
 
 varyHigher() {
-  echo $1
+  if [[ $(isInt $1) -eq 1 ]]; then
+    echo $(($1 + 1))
+  fi
 }
 
 printMatrix() {
-  #declare -A argArr=("${!1}")
-  #echo "${argArr[@]}"
+  declare -A argArr=("${!1}")
+  echo "${argArr[@]}"
   echo "lel"
 }
 
-# returns 1 if $1 >= $2
+# returns 1 if $1 > $2, 0 if $1 == $2 and -1 if $1 < $2
 compareResults() {
-  isFloat $1
-  FLT=$?
-  isFloat $2
-  FLT=$FLT || $?
-  # both floats
+  FLT=$(isFloat $1)
+  FLT=$FLT || isFloat $2
+  # both floats TODO
   if [[ $FLT -eq 1 ]]; then
     if [ $(echo "$2 > $1" | bc ) -ne 0 ]; then
       echo 0
@@ -70,10 +75,14 @@ compareResults() {
     fi
   else
     # both integers
-    if (( $2 < $1 )); then
-      echo 0
-    else
+    if (( $1 > $2 )); then
       echo 1
+    else
+      if (( $1 < $2 )); then
+        echo -1
+      else
+        echo 0
+      fi
     fi
   fi
 
@@ -106,8 +115,8 @@ done
 # find the indices of numbers
 IT_NUM=0
 for ((i=0;i<${#CMD_SPLIT[@]};i++)) do
-  isNum CMD_SPLIT[$i]
-  if [[ $? -eq 1 ]]; then
+  IS_NUM=$(isNum ${CMD_SPLIT[$i]})
+  if [[ $IS_NUM -eq 1 ]]; then
     NUM_INDICES[$IT_NUM]=$i
     let IT_NUM=IT_NUM+1
   fi
@@ -118,53 +127,56 @@ COLS=3
 
 declare -A VARIATIONS
 
-# tweak the numbrs and fill the VARIATIONS array
-for ((i=0;i<ROWS;i++)) do
-  for ((j=0;j<COLS;j++)) do
-    IND=${NUM_INDICES[$i]}
-    NUM=${CMD_SPLIT[$IND]}
-    case $j in
-      0)
-        varyLower $NUM
-        VARIATIONS[$i,$j]=$?
-        ;;
-      1)
-        VARIATIONS[$i,$j]=$NUM
-        ;;
-      2)
-        varyHigher $NUM
-        VARIATIONS[$i,$j]=$?
-        ;;
-    esac
-  done
-done
-
-printMatrix VARIATIONS[@]
 STAGNATION=0
 CURRENT_HIGH=$CMD_RET
 CURRENT_CMD=$PROGRAM_COMMAND
 
-# keep the best result and continue unless stagnation
 while [[ $STAGNATION -ne 1 ]]; do
   STAGNATION=1
+  # tweak the numbers and fill the VARIATIONS array
+  for ((i=0;i<ROWS;i++)) do
+    for ((j=0;j<COLS;j++)) do
+      IND=${NUM_INDICES[$i]}
+      NUM=${CMD_SPLIT[$IND]}
+      case $j in
+        0)
+          VARIATIONS[$i,$j]=$(varyLower $NUM)
+          ;;
+        1)
+          VARIATIONS[$i,$j]=$NUM
+          ;;
+        2)
+          VARIATIONS[$i,$j]=$(varyHigher $NUM)
+          ;;
+        esac
+      done
+    done
+
+CURRENT_STILL_HIGH=0
+# keep the best result and continue unless stagnation
   # iterate through the possibilities
   for ((i=0;i<ROWS;i++)) do
     for ((j=0;j<COLS;j++)) do
       # build cmd from VARIATIONS
       for ((k=0;k<ROWS;k++)) do
-        CMD_SPLIT[NUM_INDICES[$k]]=${VARIATIONS[$k]}
+        CMD_SPLIT[${NUM_INDICES[$k]}]=${VARIATIONS[$k,$j]}
       done
       CMD_TO_RUN=${CMD_SPLIT[0]}
       for ((k=1;k<${#CMD_SPLIT[@]};k++)) do
         CMD_TO_RUN="$CMD_TO_RUN ${CMD_SPLIT[$k]}"
       done
-      # exeute new cmd
+      # execute new cmd
       NEW_RET=$($CMD_TO_RUN)
-      compareResults $CURRENT_HIGH $NEW_RET
-      CURRENT_STILL_HIGH=$?
-      if [[ $CURRENT_STILL_HIGH -eq 0 ]]; then
-        CURRENT_CMD=$CMD_TO_RUN
+      CMP=$(compareResults $CURRENT_HIGH $NEW_RET)
+      if [[ $CMP -le 0 ]]; then
         CURRENT_HIGH=$NEW_RET
+        if [[ $CMP -lt 0 ]]; then
+          CURRENT_CMD=$CMD_TO_RUN
+        fi
+      fi
+
+      CURRENT_STILL_HIGH=$CMP || $CURRENT_STILL_HIGH
+      if [[ $CURRENT_STILL_HIGH -lt 0 ]]; then
         STAGNATION=0
       fi
     done
