@@ -148,12 +148,12 @@ while [[ $STAGNATION -ne 1 ]]; do
         2)
           VARIATIONS[$i,$j]=$(varyHigher $NUM)
           ;;
-        esac
-      done
+      esac
     done
+  done
 
-CURRENT_STILL_HIGH=0
-# keep the best result and continue unless stagnation
+  CURRENT_STILL_HIGH=0
+  # keep the best result and continue unless stagnation
   # iterate through the possibilities
   for ((i=0;i<ROWS;i++)) do
     for ((j=0;j<COLS;j++)) do
