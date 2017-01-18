@@ -10,6 +10,10 @@ Adds a list of useful functions and aliases to your bash prompt
 Used for a clean slate install of ubuntu to get up to speed quicker
 * Intended Cygwin support (not really tested the latest versions)
 
+## wiggle.sh
+Used to run applications with parameters that simultaniously return a value to be maximized.
+Currently under developement.
+
 Feedback welcome and appreciated. Pull requests welcome: readability over elegance
 
 ## Disclaimer
