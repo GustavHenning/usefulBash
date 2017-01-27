@@ -27,7 +27,7 @@ DESCENDING=$(bash ../../wiggle.sh "bash ./descending.sh --asdf 100")
 RES=$? || RES;
 ecol
 SCORE=$(echo $DESCENDING | cut -d' ' -f 2)
-if [[ $SCORE -ne 100 ]]; then RES=1; echo; echo "Failed test: descending"; fi
+if [[ $SCORE -ne 101 ]]; then RES=1; echo; echo "Failed test: descending"; fi
 
 
 
