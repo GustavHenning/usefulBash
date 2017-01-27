@@ -22,7 +22,8 @@ testRan() {
   TEST_NAME=$3
   RES=$4
   SCORE=$(echo $TESTED | cut -d' ' -f 2)
-  if [[ $SCORE -ne $EXPECTED_SCORE ]]; then RES=1; echo; echo "Test failed: $TEST_NAME";fi
+  EXP=$(echo $SCORE'=='$EXPECTED_SCORE | bc )
+  if [[ $EXP -eq 0 ]]; then RES=1; echo; echo "Test failed: $TEST_NAME";fi
   ecol $RES
   return $RES
 }
@@ -42,7 +43,7 @@ RES=$? || RES;
 testRan "$INT_DESC" 100 "intDesc" $RES
 RES=$?
 
-FLOAT_INCR=$(bash ../../wiggle.sh "bash ./floatIncr.sh --asdf 0.05")
+FLOAT_INCR=$(bash ../../wiggle.sh "bash ./floatIncr.sh --asdf 0.9")
 RES=$? || RES;
 testRan "$FLOAT_INCR" 1.0 "floatIncr" $RES
 RES=$?

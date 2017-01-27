@@ -11,7 +11,7 @@
 # author: Gustav Henning 2016
 #
 
-DEBUG=1
+DEBUG=0
 #set -x
 
 
