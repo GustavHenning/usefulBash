@@ -5,7 +5,7 @@
 RED=`tput setaf 1`
 GREEN=`tput setaf 2`
 RESET=`tput sgr0`
-
+# echo color
 ecol() {
   if [ $1 -eq 1 ]; then
     echo -n "${RED}-${RESET}"
@@ -27,20 +27,26 @@ testRan() {
   return $RES
 }
 
-SIMPLE_TERMINATION=$(bash ../../wiggle.sh "bash ./simpleTermination.sh --asdf 10")
-RES=$? || RES;
-testRan "$SIMPLE_TERMINATION" 100 "simpleTermination" $RES
-RES=$?
+INT_INCR=$(bash ../../wiggle.sh "bash ./intIncr.sh --asdf 50")
+RES=$? || RES; # see if command succeeds
+testRan "$INT_INCR" 100 "intIncr" $RES
+RES=$? # see if score is achieved
 
-DESCENDING=$(bash ../../wiggle.sh "bash ./descending.sh --asdf 100")
+INT_PASS_ZERO=$(bash ../../wiggle.sh "bash ./intIncr.sh --asdf -10")
 RES=$? || RES;
-testRan "$DESCENDING" 100 "descending" $RES
+testRan "$INT_PASS_ZERO" 100 "intIncrPassZero" $RES
+RES=$? 
+
+INT_DESC=$(bash ../../wiggle.sh "bash ./intDesc.sh --asdf 100")
+RES=$? || RES;
+testRan "$INT_DESC" 100 "intDesc" $RES
 RES=$?
 
 
 echo
-echo $SIMPLE_TERMINATION;
-echo $DESCENDING;
+echo $INT_INCR;
+echo $INT_PASS_ZERO
+echo $INT_DESC;
 
 if [[ $RES -eq 0 ]]; then
   echo "Tests passed."
