@@ -7,7 +7,7 @@ GREEN=`tput setaf 2`
 RESET=`tput sgr0`
 
 ecol() {
-  if [ $? -eq 1 ]; then
+  if [ $1 -eq 1 ]; then
     echo -n "${RED}-${RESET}"
   else
     echo -n "${GREEN}+${RESET}"
@@ -19,15 +19,15 @@ RES=0
 
 SIMPLE_TERMINATION=$(bash ../../wiggle.sh "bash ./simpleTermination.sh --asdf 10")
 RES=$? || RES;
-ecol
 SCORE=$(echo $SIMPLE_TERMINATION | cut -d' ' -f 2)
 if [[ $SCORE -ne 100 ]]; then RES=1; echo; echo "Failed test: simpleTermination";fi
+ecol $RES
 
 DESCENDING=$(bash ../../wiggle.sh "bash ./descending.sh --asdf 100")
 RES=$? || RES;
-ecol
 SCORE=$(echo $DESCENDING | cut -d' ' -f 2)
-if [[ $SCORE -ne 101 ]]; then RES=1; echo; echo "Failed test: descending"; fi
+if [[ $SCORE -ne 100 ]]; then RES=1; echo; echo "Failed test: descending"; fi
+ecol $RES
 
 
 
