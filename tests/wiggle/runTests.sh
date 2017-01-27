@@ -16,19 +16,26 @@ ecol() {
 }
 
 RES=0
+testRan() {
+  TESTED=$1
+  EXPECTED_SCORE=$2
+  TEST_NAME=$3
+  RES=$4
+  SCORE=$(echo $TESTED | cut -d' ' -f 2)
+  if [[ $SCORE -ne $EXPECTED_SCORE ]]; then RES=1; echo; echo "Test failed: $TEST_NAME";fi
+  ecol $RES
+  return $RES
+}
 
 SIMPLE_TERMINATION=$(bash ../../wiggle.sh "bash ./simpleTermination.sh --asdf 10")
 RES=$? || RES;
-SCORE=$(echo $SIMPLE_TERMINATION | cut -d' ' -f 2)
-if [[ $SCORE -ne 100 ]]; then RES=1; echo; echo "Failed test: simpleTermination";fi
-ecol $RES
+testRan "$SIMPLE_TERMINATION" 100 "simpleTermination" $RES
+RES=$?
 
 DESCENDING=$(bash ../../wiggle.sh "bash ./descending.sh --asdf 100")
 RES=$? || RES;
-SCORE=$(echo $DESCENDING | cut -d' ' -f 2)
-if [[ $SCORE -ne 100 ]]; then RES=1; echo; echo "Failed test: descending"; fi
-ecol $RES
-
+testRan "$DESCENDING" 100 "descending" $RES
+RES=$?
 
 
 echo
