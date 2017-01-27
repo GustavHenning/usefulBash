@@ -11,6 +11,8 @@
 # author: Gustav Henning 2016
 #
 
+DEBUG=0
+
 # returns 1 if arg passed is an integer
 isInt() {
   if [ "$1" -eq "$1" ]; then
@@ -42,11 +44,7 @@ isFloat() {
 
 varyLower() { # TODO floats
   if [[ $(isInt $1) -eq 1 ]]; then
-    if [[ $1 -eq 1 ]]; then
-      echo 0.9
-    else
       echo $(($1 - 1))
-    fi
   fi
 }
 
@@ -120,6 +118,12 @@ ROWS=${#NUM_INDICES[@]}
 COLS=3
 
 declare -A VARIATIONS
+declare -A NEXT_CMD_SPLIT
+
+for key in "${!CMD_SPLIT[@]}"
+do
+  NEXT_CMD_SPLIT["$key"]="${CMD_SPLIT["$key"]}"
+done
 
 STAGNATION=0
 CURRENT_HIGH=$CMD_RET
@@ -127,12 +131,15 @@ CURRENT_CMD=$PROGRAM_COMMAND
 
 while [[ $STAGNATION -ne 1 ]]; do
   STAGNATION=1
+  if [ $DEBUG -eq 1 ]; then
+    (>&2 echo "DBG: new epoch with $CURRENT_CMD")
+  fi
   # tweak the numbers and fill the VARIATIONS array
   # TODO add option for 5 columns or more
   for ((i=0;i<ROWS;i++)) do
     for ((j=0;j<COLS;j++)) do
       IND=${NUM_INDICES[$i]}
-      NUM=${CMD_SPLIT[$IND]}
+      NUM=${NEXT_CMD_SPLIT[$IND]}
       case $j in
         0)
           VARIATIONS[$i,$j]=$(varyLower $NUM)
@@ -163,12 +170,24 @@ while [[ $STAGNATION -ne 1 ]]; do
       # execute new cmd
       NEW_RET=$($CMD_TO_RUN)
       CMP=$(compareResults $CURRENT_HIGH $NEW_RET)
+      if [ $DEBUG -eq 1 ]; then
+        (>&2 echo "DBG: $CMD_TO_RUN: $NEW_RET, compared to $CURRENT_HIGH: $CMP")
+      fi
       # if new top score
       if [[ $CMP -le 0 ]]; then
         CURRENT_HIGH=$NEW_RET
         # dont replace CMD if same score
         if [[ $CMP -lt 0 ]]; then
           CURRENT_CMD=$CMD_TO_RUN
+          # Populate the next array
+          for key in "${!CMD_SPLIT[@]}"
+          do
+            NEXT_CMD_SPLIT["$key"]="${CMD_SPLIT["$key"]}"
+          done
+
+          if [ $DEBUG -eq 1 ]; then
+            (>&2 echo "DBG: New high with $CMD_TO_RUN: $NEW_RET, compared to $CURRENT_HIGH: $CMP")
+          fi
         fi
       fi
       # stagnate only if all iterations gave no new top score
