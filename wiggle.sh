@@ -44,7 +44,7 @@ isFloat() {
 
 varyLower() { # TODO floats
   if [[ $(isInt $1) -eq 1 ]]; then
-      echo $(($1 - 1))
+    echo $(($1 - 1))
   fi
 }
 
@@ -120,6 +120,7 @@ COLS=3
 declare -A VARIATIONS
 declare -A NEXT_CMD_SPLIT
 
+# Use NEXT_CMD_SPLIT to remember which has the high score, populate by associative array
 for key in "${!CMD_SPLIT[@]}"
 do
   NEXT_CMD_SPLIT["$key"]="${CMD_SPLIT["$key"]}"
@@ -179,7 +180,8 @@ while [[ $STAGNATION -ne 1 ]]; do
         # dont replace CMD if same score
         if [[ $CMP -lt 0 ]]; then
           CURRENT_CMD=$CMD_TO_RUN
-          # Populate the next array
+
+          # Use NEXT_CMD_SPLIT to remember which has the high score, populate by associative array
           for key in "${!CMD_SPLIT[@]}"
           do
             NEXT_CMD_SPLIT["$key"]="${CMD_SPLIT["$key"]}"
