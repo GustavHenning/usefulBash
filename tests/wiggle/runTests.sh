@@ -35,18 +35,23 @@ RES=$? # see if score is achieved
 INT_PASS_ZERO=$(bash ../../wiggle.sh "bash ./intIncr.sh --asdf -10")
 RES=$? || RES;
 testRan "$INT_PASS_ZERO" 100 "intIncrPassZero" $RES
-RES=$? 
+RES=$?
 
 INT_DESC=$(bash ../../wiggle.sh "bash ./intDesc.sh --asdf 100")
 RES=$? || RES;
 testRan "$INT_DESC" 100 "intDesc" $RES
 RES=$?
 
+FLOAT_INCR=$(bash ../../wiggle.sh "bash ./floatIncr.sh --asdf 0.05")
+RES=$? || RES;
+testRan "$FLOAT_INCR" 1.0 "floatIncr" $RES
+RES=$?
 
 echo
 echo $INT_INCR;
 echo $INT_PASS_ZERO
 echo $INT_DESC;
+echo $FLOAT_INCR;
 
 if [[ $RES -eq 0 ]]; then
   echo "Tests passed."

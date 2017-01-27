@@ -11,16 +11,9 @@
 # author: Gustav Henning 2016
 #
 
-DEBUG=0
+DEBUG=1
+#set -x
 
-# returns 1 if arg passed is an integer
-isInt() {
-  if [ "$1" -eq "$1" ]; then
-    echo 1
-  else
-    echo 0
-  fi
-}
 
 # returns 1 if arg is a number
 isNum() {
@@ -42,28 +35,75 @@ isFloat() {
   fi
 }
 
-varyLower() { # TODO floats
-  if [[ $(isInt $1) -eq 1 ]]; then
-    echo $(($1 - 1))
+# returns 1 if arg passed is an integer
+isInt() {
+  if [ $(isFloat $1) -eq 1 ]; then
+    echo 0
+  else
+    if [ "$1" -eq "$1" ]; then
+      echo 1
+    else
+      echo 0
+    fi
   fi
 }
 
+# returns the amount of numbers after the decimal point in a float.
+sigFig() {
+  GTZ=$(echo "$1 < 0" | bc -l)
+  NUM=$1
+  NUMCHR=${#NUM}
+  if [ $GTZ -eq 0 ]; then
+    echo $(($NUMCHR - 1))
+  else
+    echo $(($NUMCHR - 2))
+  fi
+}
+
+deciFromSig(){
+  POW=$(echo 10^$1 | bc)
+
+  echo "$(echo 1/$POW | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}$//')"
+}
+
+varyLower() { # TODO floats
+  if [[ $(isInt $1) -eq 1 ]]; then
+    echo $(($1 - 1))
+  else
+    SIGFIG=$(sigFig $1)
+    INCR=$(deciFromSig $SIGFIG)
+    if [ $DEBUG -eq 1 ]; then
+      (>&2 echo "DBG: $1 gives sigfig: $SIGFIG gives decimal: $INCR")
+    fi
+    echo "$(echo "$1 - $INCR" | bc -l)"
+  fi
+}
+#set -x
 varyHigher() { # TODO floats
   if [[ $(isInt $1) -eq 1 ]]; then
     echo $(($1 + 1))
+  else
+    SIGFIG=$(sigFig $1)
+    INCR=$(deciFromSig $SIGFIG)
+    echo "$(echo "$1 + $INCR" | bc -l)"
   fi
 }
 
 # returns 1 if $1 > $2, 0 if $1 == $2 and -1 if $1 < $2
 compareResults() {
   FLT=$(isFloat $1)
-  FLT=$FLT || isFloat $2
+  SECFLT=$(isFloat $2)
+  FLT=$FLT || $SECFLT # if any are flt, do flt expr
   # both floats TODO
   if [[ $FLT -eq 1 ]]; then
-    if [ $(echo "$2 > $1" | bc ) -ne 0 ]; then
-      echo 0
-    else
+    if [ $(echo "$1 > $2" | bc ) -eq 1 ]; then
       echo 1
+    else
+      if [ $(echo "$1 == $2" | bc ) -eq 1 ]; then
+        echo 0
+      else
+        echo -1
+      fi
     fi
   else
     # both integers
