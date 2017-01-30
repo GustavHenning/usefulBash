@@ -4,7 +4,7 @@
 # a test to see if wiggle.sh converges on a floating point number
 #
 #set -x
-MAX_VAL=1.0
+MAX_VAL=-0.1
 PARAM_VAL=$2
 
 # returns 1 if arg passed is a float

@@ -1,5 +1,6 @@
-Test that terminates on arg 0.5
 Test that terminates on arg -0.1
 Test with two or more parameters
-Test in which parameters go from negative to positive
 -||- but vice versa
+Test that increases in score when more detailed floating point numbers are used
+Test that checks for filesys errors
+Test that checks for parameter error messages
