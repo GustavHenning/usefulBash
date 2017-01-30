@@ -55,7 +55,7 @@ RES=$?
 
 FLOAT_INCR_FROM_ZERO=$(bash ../../wiggle.sh "bash ./floatIncr.sh --asdf 0.0")
 RES=$? || RES;
-testRan "$FLOAT_INCR_FROM_ZERO" 1.0 "floatIncr" $RES
+testRan "$FLOAT_INCR_FROM_ZERO" 1.0 "floatIncrFromZero" $RES
 RES=$?
 
 FLOAT_DESC=$(bash ../../wiggle.sh "bash ./floatDesc.sh --asdf 0.5")
