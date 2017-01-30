@@ -53,6 +53,11 @@ RES=$? || RES;
 testRan "$FLOAT_INCR" 1.0 "floatIncr" $RES
 RES=$?
 
+FLOAT_INCR_FROM_ZERO=$(bash ../../wiggle.sh "bash ./floatIncr.sh --asdf 0.0")
+RES=$? || RES;
+testRan "$FLOAT_INCR_FROM_ZERO" 1.0 "floatIncr" $RES
+RES=$?
+
 FLOAT_DESC=$(bash ../../wiggle.sh "bash ./floatDesc.sh --asdf 0.5")
 RES=$? || RES;
 testRan "$FLOAT_DESC" -0.1 "floatDesc" $RES
@@ -80,6 +85,7 @@ echo $INT_PASS_ZERO_FROM_POS;
 echo $INT_PASS_ZERO_FROM_NEG;
 # Floating point tests
 echo $FLOAT_INCR;
+echo $FLOAT_INCR_FROM_ZERO;
 echo $FLOAT_DESC;
 echo $FLOAT_PASS_ZERO_FROM_POS;
 echo $FLOAT_PASS_ZERO_FROM_NEG;
