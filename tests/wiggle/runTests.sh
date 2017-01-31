@@ -78,17 +78,27 @@ echo
 # File system and error msg tests
 # TODO
 # Integer tests
-echo $INT_INCR;
-echo $INT_INCR_FROM_ZERO;
-echo $INT_DESC;
-echo $INT_PASS_ZERO_FROM_POS;
-echo $INT_PASS_ZERO_FROM_NEG;
+echo "int incr:"
+echo $INT_INCR
+echo "int incr from zero:"
+echo $INT_INCR_FROM_ZERO
+echo "int desc:"
+echo $INT_DESC
+#echo "int pass zero from pos:" TODO
+#echo $INT_PASS_ZERO_FROM_POS
+echo "int pass zero from neg:"
+echo $INT_PASS_ZERO_FROM_NEG
 # Floating point tests
-echo $FLOAT_INCR;
-echo $FLOAT_INCR_FROM_ZERO;
-echo $FLOAT_DESC;
-echo $FLOAT_PASS_ZERO_FROM_POS;
-echo $FLOAT_PASS_ZERO_FROM_NEG;
+echo "float incr"
+echo $FLOAT_INCR
+echo "float incr from zero"
+echo $FLOAT_INCR_FROM_ZERO
+echo "float desc"
+echo $FLOAT_DESC
+echo "float pass zero from pos"
+echo $FLOAT_PASS_ZERO_FROM_POS
+echo "float pass zero from neg"
+echo $FLOAT_PASS_ZERO_FROM_NEG
 
 if [[ $RES -eq 0 ]]; then
   echo "Tests passed."

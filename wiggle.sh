@@ -66,16 +66,22 @@ deciFromSig(){
   echo "$(echo 1/$POW | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}$//')"
 }
 
-varyLower() { # TODO floats
+varyLower() {
   if [[ $(isInt $1) -eq 1 ]]; then
     echo $(($1 - 1))
   else
     SIGFIG=$(sigFig $1)
     INCR=$(deciFromSig $SIGFIG)
     if [ $DEBUG -eq 1 ]; then
-      (>&2 echo "DBG: $1 gives sigfig: $SIGFIG gives decimal: $INCR")
+      (>&2 echo "DBG: $1 gives sigfig: $SIGFIG gives decimal: $INCR, returns: $(echo "$1 - $INCR" | bc -l)")
     fi
-    echo "$(echo "$1 - $INCR" | bc -l)"
+    TO_RET="$(echo "$1 - $INCR" | bc -l)"
+    # if TO_RET equals 0 then it should return 0.0
+    if [ "$(echo "$TO_RET == 0" | bc -l)" -eq 0 ];then
+      echo $TO_RET
+    else
+      echo 0.0
+    fi
   fi
 }
 #set -x
@@ -85,7 +91,16 @@ varyHigher() { # TODO floats
   else
     SIGFIG=$(sigFig $1)
     INCR=$(deciFromSig $SIGFIG)
-    echo "$(echo "$1 + $INCR" | bc -l)"
+    if [ $DEBUG -eq 1 ]; then
+      (>&2 echo "DBG: $1 gives sigfig: $SIGFIG gives decimal: $INCR, returns: $(echo "$1 + $INCR" | bc -l)")
+    fi
+    TO_RET="$(echo "$1 + $INCR" | bc -l)"
+    # if TO_RET equals 0 then it should return 0.0
+    if [ "$(echo "$TO_RET == 0" | bc -l)" -eq 0 ];then
+      echo $TO_RET
+    else
+      echo 0.0
+    fi
   fi
 }
 
@@ -94,6 +109,10 @@ compareResults() {
   FLT=$(isFloat $1)
   SECFLT=$(isFloat $2)
   FLT=$FLT || $SECFLT # if any are flt, do flt expr
+  if [ $DEBUG -eq 1 ]; then
+    (>&2 echo "DBG: 1: $1, 2: $2, FLT: $FLT, SECFLT: $SECFLT")
+  fi
+
   # both floats TODO
   if [[ $FLT -eq 1 ]]; then
     if [ $(echo "$1 > $2" | bc ) -eq 1 ]; then

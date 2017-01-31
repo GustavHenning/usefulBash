@@ -29,6 +29,6 @@ if [[ $PARAM_VALID -ne 0 ]]; then
     echo "$MAX_VAL";
   fi
 else
-  echo "Test failed: second param not a number";
+  (>&2 echo "Test failed: second param not a number")
   exit 1;
 fi
