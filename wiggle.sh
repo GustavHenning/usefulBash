@@ -37,7 +37,7 @@ isFloat() {
 
 # returns 1 if arg passed is an integer
 isInt() {
-  if [ $(isFloat $1) -eq 1 ]; then
+  if [ "$(isFloat $1)" -eq 1 ]; then
     echo 0
   else
     if [ "$1" -eq "$1" ]; then
@@ -115,10 +115,10 @@ compareResults() {
 
   # both floats TODO
   if [[ $FLT -eq 1 ]]; then
-    if [ $(echo "$1 > $2" | bc ) -eq 1 ]; then
+    if [ "$(echo "$1 > $2" | bc -l)" -eq 1 ]; then
       echo 1
     else
-      if [ $(echo "$1 == $2" | bc ) -eq 1 ]; then
+      if [ "$(echo "$1 == $2" | bc -l)" -eq 1 ]; then
         echo 0
       else
         echo -1

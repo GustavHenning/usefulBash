@@ -31,12 +31,12 @@ testRan() {
 INT_INCR=$(bash ../../wiggle.sh "bash ./intIncr.sh --asdf 50")
 RES=$? || RES; # see if command succeeds
 testRan "$INT_INCR" 100 "intIncr" $RES
-RES=$? # see if score is achieved
+RES=$? # see if score is achieved, res is passed in and returned so it wont reset
 
 INT_INCR_FROM_ZERO=$(bash ../../wiggle.sh "bash ./intIncr.sh --asdf 0")
-RES=$? || RES; # see if command succeeds
+RES=$? || RES;
 testRan "$INT_INCR_FROM_ZERO" 100 "intIncrFromZero" $RES
-RES=$? # see if score is achieved
+RES=$? 
 
 INT_DESC=$(bash ../../wiggle.sh "bash ./intDesc.sh --asdf 100")
 RES=$? || RES;
@@ -99,6 +99,7 @@ echo "float pass zero from pos"
 echo $FLOAT_PASS_ZERO_FROM_POS
 echo "float pass zero from neg"
 echo $FLOAT_PASS_ZERO_FROM_NEG
+echo
 
 if [[ $RES -eq 0 ]]; then
   echo "Tests passed."
