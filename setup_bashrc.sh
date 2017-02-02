@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Original author: miguelgfierro@github
+# Contributor: miguelgfierro@github
 #
 # Set up several functions to .bashrc like cs (a combination of cd+ls), ccat
 # (cat with color) or reimplement evince to run in background.
