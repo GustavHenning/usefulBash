@@ -1,16 +1,29 @@
 #!/bin/bash
 
+TEXNAME="thesis.tex"
+AUXNAME="${TEXNAME%.tex}.aux"
+PDFNAME="${TEXNAME%.tex}.pdf"
+
 rm -rf ./*~
 if [ ! -d ./out ]; then
 	mkdir out
 fi
 
-pdflatex thesis.tex
+if [ "$(ps -ef | grep evince-previewer | grep -v grep | wc -l)" -gt 0 ]; then
+	kill "$(pidof evince-previewer)"
+fi
+
+pdfLatexMacro(){
+	pdflatex -shell-escape -interaction=nonstopmode -file-line-error "$TEXNAME" | egrep ".*:[0-9]*:.*|LaTeX Warning:"
+}
+
+pdfLatexMacro
+pdfLatexMacro
+bibtex -terse "$AUXNAME"
+pdfLatexMacro
 
 #mv ./*.aux ./out
 mv ./*.out ./out
 
-if [ $(ps -ef | grep FoxitReader | grep -v grep | wc -l) -gt 0 ]; then
-	kill $(pidof FoxitReader)
-fi
-~/opt/foxitsoftware/foxitreader/FoxitReader.sh ./thesis.pdf > /dev/null 2>&1 &
+evince -fw ./$PDFNAME > /dev/null 2>&1 &
+
