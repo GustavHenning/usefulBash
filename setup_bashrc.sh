@@ -73,7 +73,13 @@ alias fd="find . -type d -name"
 alias now="date +%T"
 
 # all-in-one update
-alias update="sudo apt-get update && sudo apt-get upgrade && sudo apt-get autoclean"
+alias update="sudo apt-get update -y \
+&& sudo apt-get upgrade -y \
+&& sudo apt-get dist-upgrade -y \
+&& sudo apt-get autoclean -y \
+&& which pip > /dev/null 2>&1 \
+&& pip install --upgrade pip \
+&& pip freeze --local | grep -v \'^\-e\' | cut -d = -f 1  | xargs -n1 pip install -U --user"
 
 # OS Power commands
 alias reboot="sudo /sbin/reboot"
