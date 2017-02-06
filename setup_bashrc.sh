@@ -64,6 +64,7 @@ alias mv="mv -i"
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
+alias nau="nautilus . > /dev/null 2>&1 & disown"
 
 # quickly find files and directory
 alias ff="find . -type f -name"
