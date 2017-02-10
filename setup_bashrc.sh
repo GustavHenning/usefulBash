@@ -82,7 +82,7 @@ alias update="sudo apt-get update -y | grep -v \':\' \
 && which pip > /dev/null 2>&1 \
 && echo \'pip update cycle...\' \
 && pip install --upgrade --quiet pip \
-&& pip freeze --local --quiet | grep -v \'^\-e\' | cut -d = -f 1  | xargs -n1 pip install --user -U"
+&& pip freeze --local --quiet | grep -v \'^\-e\' | cut -d = -f 1  | xargs -n1 sudo -H pip install --user -U"
 
 alias upd="update | grep \'install\'"
 
