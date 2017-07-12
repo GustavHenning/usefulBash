@@ -97,6 +97,8 @@ alias rswifi="sudo service network-manager restart"
 # open mail client
 alias mail="thunderbird > /dev/null 2>&1 & disown"
 
+alias steamw="wine ~/.wine/drive_c/Program\ Files\ \(x86\)/Steam/Steam.exe -no-dwrite"
+
 #
 # cd + ls
 #
