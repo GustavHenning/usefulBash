@@ -94,8 +94,9 @@ alias updatePretty="sudo apt-get update -y | grep -v \':\' \
 && sudo apt autoremove -y \
 && which pip > /dev/null 2>&1 \
 && echo \'pip update cycle...\' \
-&& [[ -e ~/git/usefulBash/green_red.sh ]] \
-&& bash ~/git/usefulBash/green_red.sh"
+&& [[ -e ~/git/usefulBash/green_red_pip.sh ]] \
+&& bash ~/git/usefulBash/green_red_pip.sh"
+# TODO make this independent of location
 
 alias updp="updatePretty"
 
