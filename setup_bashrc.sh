@@ -86,6 +86,20 @@ alias update="sudo apt-get update -y | grep -v \':\' \
 
 alias upd="update | grep \'install\'"
 
+# Note that this refers to a file 
+alias updatePretty="sudo apt-get update -y | grep -v \':\' \
+&& sudo apt-get upgrade -y \
+&& sudo apt-get dist-upgrade -y \
+&& sudo apt-get autoclean -y \
+&& sudo apt autoremove -y \
+&& which pip > /dev/null 2>&1 \
+&& echo \'pip update cycle...\' \
+&& [[ -e ~/git/usefulBash/green_red.sh ]] \
+&& bash ~/git/usefulBash/green_red.sh"
+
+alias updp="updatePretty"
+
+
 # OS Power commands
 alias reboot="sudo /sbin/reboot"
 alias shutdown="sudo /sbin/shutdown"
