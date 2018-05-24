@@ -98,7 +98,8 @@ wget http://cdn01.foxitsoftware.com/pub/foxit/reader/desktop/linux/2.x/2.2/en_us
 tar xzvf FoxitReader*.tar.gz
 sudo chmod a+x FoxitReader*.run
 ./FoxitReader.*.run
-sudo ./FoxitReader.*.run
+rm -f ./FoxitReader*
+
 
 
 
