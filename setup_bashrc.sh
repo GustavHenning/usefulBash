@@ -37,6 +37,9 @@ fi
 
 ADDON=$'#START!SETUP!SCR##########
 
+EB_LOCATION=~/.local/bin
+export PATH=$EB_LOCATION:$PATH
+
 # Hide user name and host in terminal
 #export PS1="\w$ "
 
@@ -86,7 +89,7 @@ alias update="sudo apt-get update -y | grep -v \':\' \
 
 alias upd="update | grep \'install\'"
 
-# Note that this refers to a file 
+# Note that this refers to a file
 alias updatePretty="sudo apt-get update -y | grep -v \':\' \
 && sudo apt-get upgrade -y \
 && sudo apt-get dist-upgrade -y \
