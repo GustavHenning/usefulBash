@@ -244,6 +244,10 @@ function fixnames () {
   | while IFS= read -r f ; do mv -i \"$f\" \"$(dirname \"$f\")/$(basename \"$f\"|tr \' \' _)\" ; done
 }
 
+function mci () {
+  mvn clean install
+}
+
 #END!SETUP!SCR#'
 
 # apply the change, replace if an older version exists
